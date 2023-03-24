@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, type VNodeRef, onUnmounted } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
+import TutorialChild from './TutorialChild.vue'
 
+// Refs & callbacks
 const text = ref('Hello world!')
 const className = 'header-class'
 
 const count = ref(0)
 
 const view2 = ref(false)
-function toggle() {
+function toggleView() {
   view2.value = !view2.value
 }
 
+// Reactive & computed
 let id = 0
 const hideCompleted = ref(false)
 const list = reactive([
@@ -35,6 +38,7 @@ function removeFromList(id: number) {
   )
 }
 
+// DOM Refs & Lifecycle functions
 const refEl = ref<HTMLElement>()
 let intervalVal: number
 onMounted(() => {
@@ -60,17 +64,36 @@ onUnmounted(() => {
     clearInterval(intervalVal)
   }
 })
+
+// Watch
+const status = ref('')
+let statusTimeout: number | undefined
+watch(list, (updatedList) => {
+  status.value = JSON.stringify(updatedList, null, 2)
+
+  if (typeof statusTimeout !== 'undefined') {
+    clearTimeout(statusTimeout)
+  }
+
+  statusTimeout = setTimeout(() => {
+    status.value = ''
+    statusTimeout = undefined
+  }, 3000)
+})
+
+// Child emit
+const childText = ref('do not click me a lot please')
 </script>
 
 <template>
   <h1 ref="refEl" :class="className">{{ text }}</h1>
   <div class="button-row">
     <button @click="() => count++">Count: {{ count }}</button>
-    <button @click="toggle">Toggle view</button>
+    <button @click="toggleView">Toggle view</button>
   </div>
   <input v-if="view2" v-model="count" type="number" />
   <input v-else v-model="text" />
-  <hr style="margin: 12px 0" />
+  <hr />
   <ul>
     <li v-for="item in filteredList" :key="item.id">
       <input type="checkbox" v-model="item.completed" />
@@ -86,6 +109,13 @@ onUnmounted(() => {
     <button @click="addToList">Add new</button>
     <button @click="() => (hideCompleted = !hideCompleted)">{{ hideCompleted ? 'Show all' : 'Hide completed' }}</button>
   </div>
+  <hr style="margin-bottom: 0" />
+  <div :class="`status ${!status ? 'empty' : ''}`">
+    <h3>List updated</h3>
+    <pre>{{ status }}</pre>
+  </div>
+  <hr style="margin-top: 0" />
+  <TutorialChild :text="childText" @on-clicked-a-lot="(v) => (childText = v)" />
 </template>
 
 <style>
@@ -93,7 +123,12 @@ onUnmounted(() => {
   color: cadetblue;
 }
 
-ul {
+hr {
+  margin: 12px 0;
+}
+
+ul,
+pre {
   overflow-y: auto;
   min-height: 100px;
   max-height: 200px;
@@ -115,4 +150,27 @@ li {
   gap: 8px;
   margin: 8px 0;
 }
+
+div.status {
+  padding: 12px 0;
+  height: 250px;
+  transition: all 250ms ease-in-out;
+  overflow-y: hidden;
+}
+
+div.status.empty {
+  height: 0;
+  padding: 0;
+}
+
+pre {
+  line-height: 1em;
+  background: rgb(243 243 243);
+}
 </style>
+
+<script lang="ts">
+export default {
+  name: 'TutorialPage',
+}
+</script>
