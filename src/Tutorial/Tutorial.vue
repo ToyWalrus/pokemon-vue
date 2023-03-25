@@ -4,7 +4,7 @@ import TutorialChild from './TutorialChild.vue'
 
 // Refs & callbacks
 const text = ref('Hello world!')
-const className = 'header-class'
+const className = 'text-primary'
 
 const count = ref(0)
 
@@ -24,7 +24,7 @@ const list = reactive([
 ])
 
 const filteredList = computed(() => {
-  return hideCompleted.value ? list.filter((i) => !i.completed) : list
+  return hideCompleted.value ? list.filter(i => !i.completed) : list
 })
 
 function addToList() {
@@ -33,7 +33,7 @@ function addToList() {
 
 function removeFromList(id: number) {
   list.splice(
-    list.findIndex((i) => i.id === id),
+    list.findIndex(i => i.id === id),
     1
   )
 }
@@ -68,7 +68,7 @@ onUnmounted(() => {
 // Watch
 const status = ref('')
 let statusTimeout: number | undefined
-watch(list, (updatedList) => {
+watch(list, updatedList => {
   status.value = JSON.stringify(updatedList, null, 2)
 
   if (typeof statusTimeout !== 'undefined') {
@@ -86,36 +86,40 @@ const childText = ref('do not click me a lot please')
 </script>
 
 <template>
-  <h1 ref="refEl" :class="className">{{ text }}</h1>
-  <div class="button-row">
-    <button @click="() => count++">Count: {{ count }}</button>
-    <button @click="toggleView">Toggle view</button>
+  <div class="m-4">
+    <h1 ref="refEl" :class="className + ' font-serif text-xl tracking-widest'">{{ text }}</h1>
+    <div class="button-row">
+      <button @click="() => count++">Count: {{ count }}</button>
+      <button @click="toggleView">Toggle view</button>
+    </div>
+    <input v-if="view2" v-model="count" type="number" />
+    <input v-else v-model="text" />
+    <hr />
+    <ul>
+      <li v-for="item in filteredList" :key="item.id">
+        <input type="checkbox" v-model="item.completed" />
+        <span v-if="item.id < 4">{{ item.value }}</span>
+        <span v-else>
+          <mark>{{ item.value }}</mark>
+          <i>&nbsp;(added)</i>
+        </span>
+        <button @click="() => removeFromList(item.id)">Remove</button>
+      </li>
+    </ul>
+    <div class="button-row">
+      <button @click="addToList">Add new</button>
+      <button @click="() => (hideCompleted = !hideCompleted)">
+        {{ hideCompleted ? 'Show all' : 'Hide completed' }}
+      </button>
+    </div>
+    <hr style="margin-bottom: 0" />
+    <div :class="`status ${!status ? 'empty' : ''}`">
+      <h3>List updated</h3>
+      <pre>{{ status }}</pre>
+    </div>
+    <hr style="margin-top: 0" />
+    <TutorialChild :text="childText" @on-clicked-a-lot="v => (childText = v)" />
   </div>
-  <input v-if="view2" v-model="count" type="number" />
-  <input v-else v-model="text" />
-  <hr />
-  <ul>
-    <li v-for="item in filteredList" :key="item.id">
-      <input type="checkbox" v-model="item.completed" />
-      <span v-if="item.id < 4">{{ item.value }}</span>
-      <span v-else>
-        <mark>{{ item.value }}</mark>
-        <i>&nbsp;(added)</i>
-      </span>
-      <button @click="() => removeFromList(item.id)">Remove</button>
-    </li>
-  </ul>
-  <div class="button-row">
-    <button @click="addToList">Add new</button>
-    <button @click="() => (hideCompleted = !hideCompleted)">{{ hideCompleted ? 'Show all' : 'Hide completed' }}</button>
-  </div>
-  <hr style="margin-bottom: 0" />
-  <div :class="`status ${!status ? 'empty' : ''}`">
-    <h3>List updated</h3>
-    <pre>{{ status }}</pre>
-  </div>
-  <hr style="margin-top: 0" />
-  <TutorialChild :text="childText" @on-clicked-a-lot="(v) => (childText = v)" />
 </template>
 
 <style>
