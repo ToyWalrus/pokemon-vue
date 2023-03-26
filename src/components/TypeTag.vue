@@ -50,14 +50,14 @@ import FairyIcon from '@/assets/Fairy.svg?component'
 import type { PokemonType } from '@/model/PokemonTypes'
 import { computed } from 'vue'
 
-export interface PokemonTypeTagProps {
+export interface TypeTagProps {
   type: PokemonType
   iconOnly?: boolean
   selected?: boolean
   clickable?: boolean
 }
 
-const props = withDefaults(defineProps<PokemonTypeTagProps>(), { type: 'normal' })
+const props = withDefaults(defineProps<TypeTagProps>(), { type: 'normal' })
 
 const tagClass = computed(() => {
   let bgValue: string

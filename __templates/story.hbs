@@ -1,26 +1,20 @@
-import {{ componentName }} from '@/components/{{ componentName }}.vue';
-import type { StoryObj } from '@storybook/vue3'
+import {{ componentName }}, { type {{ componentName }}Props } from '@/components/{{ componentName }}.vue'
+import type { StoryFn } from '@storybook/vue3'
 
 export default {
+  title: '{{ componentName }}',
   component: {{ componentName }},
-  render: (args) => ({
-    components: { {{ componentName }} },
-    setup() {
-      return { args };
-    },
-    template: '<{{ kebabCase componentName }} v-bind="args" />',
-  }),
-  argTypes: {
-    // Define arg types here for controls
-  },
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
-};
-
-type Story = StoryObj<typeof {{ componentName }}>;
-
-export const Default: Story = {
-  args: {}
+  argTypes: {},
 }
+
+const Template: StoryFn<{{ componentName }}Props> = args => ({
+  components: { {{ componentName }} },
+  setup() {
+    return { args }
+  },
+  template: `<{{ kebabCase componentName }} v-bind="args" />`,
+})
+
+export const Default = Template.bind({})
+
+Default.args = {}

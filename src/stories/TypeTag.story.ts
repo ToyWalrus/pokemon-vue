@@ -1,23 +1,22 @@
-import PokemonTypeTag, { type PokemonTypeTagProps } from '@/components/PokemonTypeTag.vue'
+import TypeTag, { type TypeTagProps } from '@/components/TypeTag.vue'
 import { PokemonTypes } from '@/model/PokemonTypes'
 import type { StoryFn } from '@storybook/vue3'
-import { ref } from 'vue'
 
 export default {
-  title: 'PokemonTypeTag',
-  component: PokemonTypeTag,
+  title: 'TypeTag',
+  component: TypeTag,
   argTypes: {
     // Define arg types here for controls
     type: { control: 'select', options: PokemonTypes, default: 'normal' },
   },
 }
 
-const Template: StoryFn<PokemonTypeTagProps> = args => ({
-  components: { PokemonTypeTag },
+const Template: StoryFn<TypeTagProps> = args => ({
+  components: { TypeTag },
   setup() {
     return { args }
   },
-  template: '<pokemon-type-tag v-bind="args" />',
+  template: '<type-tag v-bind="args" />',
 })
 
 export const Default = Template.bind({})
@@ -26,8 +25,8 @@ Default.args = {
   type: 'normal',
 }
 
-export const Selectable: StoryFn<PokemonTypeTagProps> = (args, { updateArgs }) => ({
-  components: { PokemonTypeTag },
+export const Selectable: StoryFn<TypeTagProps> = (args, { updateArgs }) => ({
+  components: { TypeTag },
   setup() {
     return { args }
   },
@@ -41,7 +40,7 @@ export const Selectable: StoryFn<PokemonTypeTagProps> = (args, { updateArgs }) =
       updateArgs({ ...args, selected: !this.isSelected })
     },
   },
-  template: '<pokemon-type-tag v-bind="args" :selected="isSelected" @click="onClick" />',
+  template: '<type-tag v-bind="args" :selected="isSelected" @click="onClick" />',
 })
 
 Selectable.args = {
