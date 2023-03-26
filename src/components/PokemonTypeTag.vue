@@ -1,9 +1,9 @@
 <template>
   <div class="flex transition-all duration-200">
     <div
-      @click="onClick"
+      @click="$emit('click')"
       :class="tagClass"
-      class="flex flex-row flex-shrink-0 px-4 py-2 items-center rounded-full gap-2 transition-all duration-200"
+      class="flex flex-row select-none flex-shrink-0 px-4 py-2 items-center rounded-full gap-2 transition-all duration-200"
     >
       <NormalIcon v-if="props.type === 'normal'" />
       <FireIcon v-else-if="props.type === 'fire'" />
@@ -57,12 +57,7 @@ export interface PokemonTypeTagProps {
   clickable?: boolean
 }
 
-export interface PokemonTypeTagEmits {
-  (event: 'click'): void
-}
-
 const props = withDefaults(defineProps<PokemonTypeTagProps>(), { type: 'normal' })
-const emit = defineEmits<PokemonTypeTagEmits>()
 
 const tagClass = computed(() => {
   let bgValue: string
@@ -130,15 +125,10 @@ const tagClass = computed(() => {
     bgValue,
     {
       'cursor-default': !props.clickable,
-      'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg': props.clickable,
+      'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg active:translate-y-0': props.clickable,
+      'outline-primary outline outline-2 outline-offset-2': props.selected,
       'aspect-square p-3': props.iconOnly,
-      'outline outline-offset-2 outline-primary ': props.selected,
     },
   ]
 })
-
-function onClick() {
-  if (!props.clickable) return
-  emit('click')
-}
 </script>

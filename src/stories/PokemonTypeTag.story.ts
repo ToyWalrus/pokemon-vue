@@ -1,45 +1,51 @@
-import PokemonTypeTag from '@/components/PokemonTypeTag.vue'
+import PokemonTypeTag, { type PokemonTypeTagProps } from '@/components/PokemonTypeTag.vue'
 import { PokemonTypes } from '@/model/PokemonTypes'
-import type { StoryObj } from '@storybook/vue3'
+import type { StoryFn } from '@storybook/vue3'
 import { ref } from 'vue'
 
 export default {
+  title: 'PokemonTypeTag',
   component: PokemonTypeTag,
-  render: (args: any) => ({
-    components: { PokemonTypeTag },
-    setup() {
-      return { args }
-    },
-    template: '<pokemon-type-tag v-bind="args" />',
-  }),
   argTypes: {
     // Define arg types here for controls
     type: { control: 'select', options: PokemonTypes, default: 'normal' },
   },
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
+}
+
+const Template: StoryFn<PokemonTypeTagProps> = args => ({
+  components: { PokemonTypeTag },
+  setup() {
+    return { args }
   },
+  template: '<pokemon-type-tag v-bind="args" />',
+})
+
+export const Default = Template.bind({})
+
+Default.args = {
+  type: 'normal',
 }
 
-type Story = StoryObj<typeof PokemonTypeTag>
-
-export const Default: Story = {
-  args: {},
-}
-
-export const Selectable: Story = {
-  render(args) {
+export const Selectable: StoryFn<PokemonTypeTagProps> = (args, { updateArgs }) => ({
+  components: { PokemonTypeTag },
+  setup() {
+    return { args }
+  },
+  data() {
     return {
-      components: { PokemonTypeTag },
-      setup() {
-        const selected = ref(args.selected ?? false)
-        const onClick = () => {
-          selected.value = !selected.value
-        }
-        return { args: { type: 'normal', clickable: true, selected: selected.value, click: onClick } }
-      },
-      template: '<pokemon-type-tag v-bind="args" @click="args.onClick" />',
+      isSelected: args.selected,
     }
   },
+  methods: {
+    onClick() {
+      updateArgs({ ...args, selected: !this.isSelected })
+    },
+  },
+  template: '<pokemon-type-tag v-bind="args" :selected="isSelected" @click="onClick" />',
+})
+
+Selectable.args = {
+  type: 'bug',
+  selected: false,
+  clickable: true,
 }
