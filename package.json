@@ -15,7 +15,6 @@
     "g": "plop"
   },
   "dependencies": {
-    "clsx": "^1.2.1",
     "vite-svg-loader": "^4.0.0",
     "vue": "^3.2.47"
   },

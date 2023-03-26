@@ -1,6 +1,10 @@
 <template>
-  <div class="flex">
-    <div @click="props.onClick" :class="classValue">
+  <div class="flex transition-all duration-200">
+    <div
+      @click="onClick"
+      :class="tagClass"
+      class="flex flex-row flex-shrink-0 px-4 py-2 items-center rounded-full gap-2 transition-all duration-200"
+    >
       <NormalIcon v-if="props.type === 'normal'" />
       <FireIcon v-else-if="props.type === 'fire'" />
       <WaterIcon v-else-if="props.type === 'water'" />
@@ -45,19 +49,22 @@ import SteelIcon from '@/assets/Steel.svg?component'
 import FairyIcon from '@/assets/Fairy.svg?component'
 import type { PokemonType } from '@/model/PokemonTypes'
 import { computed } from 'vue'
-import clsx from 'clsx'
 
 export interface PokemonTypeTagProps {
   type: PokemonType
   iconOnly?: boolean
   selected?: boolean
-  onClick?: () => void
+  clickable?: boolean
+}
+
+export interface PokemonTypeTagEmits {
+  (event: 'click'): void
 }
 
 const props = withDefaults(defineProps<PokemonTypeTagProps>(), { type: 'normal' })
-const hasClick = computed(() => typeof props.onClick !== 'undefined')
+const emit = defineEmits<PokemonTypeTagEmits>()
 
-const classValue = computed(() => {
+const tagClass = computed(() => {
   let bgValue: string
   switch (props.type) {
     case 'normal':
@@ -119,9 +126,19 @@ const classValue = computed(() => {
       break
   }
 
-  return clsx('flex flex-row flex-shrink-0 px-4 py-2 items-center rounded-full gap-2', bgValue, {
-    'cursor-pointer': hasClick.value,
-    'aspect-square p-3': props.iconOnly,
-  })
+  return [
+    bgValue,
+    {
+      'cursor-default': !props.clickable,
+      'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg': props.clickable,
+      'aspect-square p-3': props.iconOnly,
+      'outline outline-offset-2 outline-primary ': props.selected,
+    },
+  ]
 })
+
+function onClick() {
+  if (!props.clickable) return
+  emit('click')
+}
 </script>
