@@ -1,0 +1,17 @@
+import {{ componentName }} from '@/components/{{ componentName }}.vue';
+
+export default {
+  title: '{{ componentName }}',
+  component: {{ componentName }},
+  parameters: {
+    // More on Story layout: https://storybook.js.org/docs/vue/configure/story-layout
+    layout: 'fullscreen',
+  },
+};
+
+const Template = () => ({
+  components: { {{ componentName }} },
+  template: '<{{ kebabCase componentName }} />',
+});
+
+export const Default = Template.bind({});
