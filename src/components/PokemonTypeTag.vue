@@ -2,24 +2,24 @@
   <div class="flex">
     <div @click="props.onClick" :class="classValue">
       <NormalIcon v-if="props.type === 'normal'" />
-      <FireIcon v-if="props.type === 'fire'" />
-      <WaterIcon v-if="props.type === 'water'" />
-      <GrassIcon v-if="props.type === 'grass'" />
-      <ElectricIcon v-if="props.type === 'electric'" />
-      <IceIcon v-if="props.type === 'ice'" />
-      <FightingIcon v-if="props.type === 'fighting'" />
-      <PoisonIcon v-if="props.type === 'poison'" />
-      <GroundIcon v-if="props.type === 'ground'" />
-      <FlyingIcon v-if="props.type === 'flying'" />
-      <PsychicIcon v-if="props.type === 'psychic'" />
-      <BugIcon v-if="props.type === 'bug'" />
-      <RockIcon v-if="props.type === 'rock'" />
-      <GhostIcon v-if="props.type === 'ghost'" />
-      <DragonIcon v-if="props.type === 'dragon'" />
-      <DarkIcon v-if="props.type === 'dark'" />
-      <SteelIcon v-if="props.type === 'steel'" />
-      <FairyIcon v-if="props.type === 'fairy'" />
-      <div class="capitalize text-white flex-grow-0 font-bold">{{ props.type }}</div>
+      <FireIcon v-else-if="props.type === 'fire'" />
+      <WaterIcon v-else-if="props.type === 'water'" />
+      <GrassIcon v-else-if="props.type === 'grass'" />
+      <ElectricIcon v-else-if="props.type === 'electric'" />
+      <IceIcon v-else-if="props.type === 'ice'" />
+      <FightingIcon v-else-if="props.type === 'fighting'" />
+      <PoisonIcon v-else-if="props.type === 'poison'" />
+      <GroundIcon v-else-if="props.type === 'ground'" />
+      <FlyingIcon v-else-if="props.type === 'flying'" />
+      <PsychicIcon v-else-if="props.type === 'psychic'" />
+      <BugIcon v-else-if="props.type === 'bug'" />
+      <RockIcon v-else-if="props.type === 'rock'" />
+      <GhostIcon v-else-if="props.type === 'ghost'" />
+      <DragonIcon v-else-if="props.type === 'dragon'" />
+      <DarkIcon v-else-if="props.type === 'dark'" />
+      <SteelIcon v-else-if="props.type === 'steel'" />
+      <FairyIcon v-else-if="props.type === 'fairy'" />
+      <div class="capitalize text-white flex-grow-0 font-bold" v-if="!props.iconOnly">{{ props.type }}</div>
     </div>
   </div>
 </template>
@@ -49,59 +49,79 @@ import clsx from 'clsx'
 
 export interface PokemonTypeTagProps {
   type: PokemonType
+  iconOnly?: boolean
   selected?: boolean
   onClick?: () => void
 }
 
-const props = defineProps<PokemonTypeTagProps>()
+const props = withDefaults(defineProps<PokemonTypeTagProps>(), { type: 'normal' })
 const hasClick = computed(() => typeof props.onClick !== 'undefined')
 
-const bgClass = computed(() => {
+const classValue = computed(() => {
+  let bgValue: string
   switch (props.type) {
     case 'normal':
-      return 'bg-type-normal'
+      bgValue = 'bg-type-normal'
+      break
     case 'fire':
-      return 'bg-type-fire'
+      bgValue = 'bg-type-fire'
+      break
     case 'water':
-      return 'bg-type-water'
+      bgValue = 'bg-type-water'
+      break
     case 'grass':
-      return 'bg-type-grass'
+      bgValue = 'bg-type-grass'
+      break
     case 'electric':
-      return 'bg-type-electric'
+      bgValue = 'bg-type-electric'
+      break
     case 'ice':
-      return 'bg-type-ice'
+      bgValue = 'bg-type-ice'
+      break
     case 'fighting':
-      return 'bg-type-fighting'
+      bgValue = 'bg-type-fighting'
+      break
     case 'poison':
-      return 'bg-type-poison'
+      bgValue = 'bg-type-poison'
+      break
     case 'ground':
-      return 'bg-type-ground'
+      bgValue = 'bg-type-ground'
+      break
     case 'flying':
-      return 'bg-type-flying'
+      bgValue = 'bg-type-flying'
+      break
     case 'psychic':
-      return 'bg-type-psychic'
+      bgValue = 'bg-type-psychic'
+      break
     case 'bug':
-      return 'bg-type-bug'
+      bgValue = 'bg-type-bug'
+      break
     case 'rock':
-      return 'bg-type-rock'
+      bgValue = 'bg-type-rock'
+      break
     case 'ghost':
-      return 'bg-type-ghost'
+      bgValue = 'bg-type-ghost'
+      break
     case 'dragon':
-      return 'bg-type-dragon'
+      bgValue = 'bg-type-dragon'
+      break
     case 'dark':
-      return 'bg-type-dark'
+      bgValue = 'bg-type-dark'
+      break
     case 'steel':
-      return 'bg-type-steel'
+      bgValue = 'bg-type-steel'
+      break
     case 'fairy':
-      return 'bg-type-fairy'
+      bgValue = 'bg-type-fairy'
+      break
     default:
-      return ''
+      bgValue = ''
+      break
   }
-})
 
-const classValue = computed(() => {
-  return clsx('flex flex-row flex-shrink-0 items-center rounded-full gap-2 px-4 py-2', bgClass.value, {
+  return clsx('flex flex-row flex-shrink-0 px-4 py-2 items-center rounded-full gap-2', bgValue, {
     'cursor-pointer': hasClick.value,
+    'aspect-square p-3': props.iconOnly,
   })
 })
 </script>
