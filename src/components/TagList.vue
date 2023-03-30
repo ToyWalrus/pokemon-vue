@@ -7,8 +7,7 @@
         :clickable="props.selectable"
         :disabled="props.disabledTags?.includes(type)"
         :fill-container="true"
-        @click.stop="onClick(type)"
-      />
+        @click.stop="onClick(type)" />
     </li>
   </ul>
 </template>

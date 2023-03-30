@@ -3,8 +3,7 @@
     <div
       @click="onClick"
       :class="tagClass"
-      class="flex flex-row select-none px-4 py-2 items-center rounded-full gap-2 transition-all duration-200"
-    >
+      class="flex flex-row select-none items-center rounded-full gap-2 transition-all duration-200">
       <NormalIcon v-if="props.type === 'normal'" />
       <FireIcon v-else-if="props.type === 'fire'" />
       <WaterIcon v-else-if="props.type === 'water'" />
@@ -57,6 +56,7 @@ export interface TypeTagProps {
   clickable?: boolean
   disabled?: boolean
   fillContainer?: boolean
+  compact?: boolean
 }
 
 const props = withDefaults(defineProps<TypeTagProps>(), { type: 'normal' })
@@ -133,6 +133,7 @@ const tagClass = computed(() => {
   return [
     bgValue,
     props.disabled ? 'text-gray-500 [&>svg>path]:fill-gray-500' : 'text-white',
+    props.compact ? 'px-2 py-0.5 [&>svg]:scale-75 text-sm' : 'px-4 py-2',
     {
       'cursor-default': !props.clickable || props.disabled,
       'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg active:translate-y-0':
