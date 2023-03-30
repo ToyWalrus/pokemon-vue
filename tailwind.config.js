@@ -15,7 +15,7 @@ module.exports = {
         'type-fire': '#F8A54F',
         'type-ghost': '#6970C5',
         'type-ground': '#D78555',
-        'type-normal': '#9A9DA1',
+        'type-normal': '#9AA6B7',
         'type-psychic': '#F87C7A',
         'type-steel': '#5596A4',
         'type-dark': '#5F606D',

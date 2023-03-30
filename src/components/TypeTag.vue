@@ -1,9 +1,9 @@
 <template>
   <div class="flex transition-all duration-200">
     <div
-      @click="$emit('click')"
+      @click="onClick"
       :class="tagClass"
-      class="flex flex-row select-none flex-shrink-0 px-4 py-2 items-center rounded-full gap-2 transition-all duration-200"
+      class="flex flex-row select-none px-4 py-2 items-center rounded-full gap-2 transition-all duration-200"
     >
       <NormalIcon v-if="props.type === 'normal'" />
       <FireIcon v-else-if="props.type === 'fire'" />
@@ -23,7 +23,7 @@
       <DarkIcon v-else-if="props.type === 'dark'" />
       <SteelIcon v-else-if="props.type === 'steel'" />
       <FairyIcon v-else-if="props.type === 'fairy'" />
-      <div class="capitalize text-white flex-grow-0 font-bold" v-if="!props.iconOnly">{{ props.type }}</div>
+      <div class="capitalize flex-grow-0 font-bold" v-if="!props.iconOnly">{{ props.type }}</div>
     </div>
   </div>
 </template>
@@ -55,80 +55,97 @@ export interface TypeTagProps {
   iconOnly?: boolean
   selected?: boolean
   clickable?: boolean
+  disabled?: boolean
+  fillContainer?: boolean
 }
 
 const props = withDefaults(defineProps<TypeTagProps>(), { type: 'normal' })
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
 
 const tagClass = computed(() => {
   let bgValue: string
-  switch (props.type) {
-    case 'normal':
-      bgValue = 'bg-type-normal'
-      break
-    case 'fire':
-      bgValue = 'bg-type-fire'
-      break
-    case 'water':
-      bgValue = 'bg-type-water'
-      break
-    case 'grass':
-      bgValue = 'bg-type-grass'
-      break
-    case 'electric':
-      bgValue = 'bg-type-electric'
-      break
-    case 'ice':
-      bgValue = 'bg-type-ice'
-      break
-    case 'fighting':
-      bgValue = 'bg-type-fighting'
-      break
-    case 'poison':
-      bgValue = 'bg-type-poison'
-      break
-    case 'ground':
-      bgValue = 'bg-type-ground'
-      break
-    case 'flying':
-      bgValue = 'bg-type-flying'
-      break
-    case 'psychic':
-      bgValue = 'bg-type-psychic'
-      break
-    case 'bug':
-      bgValue = 'bg-type-bug'
-      break
-    case 'rock':
-      bgValue = 'bg-type-rock'
-      break
-    case 'ghost':
-      bgValue = 'bg-type-ghost'
-      break
-    case 'dragon':
-      bgValue = 'bg-type-dragon'
-      break
-    case 'dark':
-      bgValue = 'bg-type-dark'
-      break
-    case 'steel':
-      bgValue = 'bg-type-steel'
-      break
-    case 'fairy':
-      bgValue = 'bg-type-fairy'
-      break
-    default:
-      bgValue = ''
-      break
+  if (props.disabled) {
+    bgValue = 'bg-gray-400'
+  } else {
+    switch (props.type) {
+      case 'normal':
+        bgValue = 'bg-type-normal'
+        break
+      case 'fire':
+        bgValue = 'bg-type-fire'
+        break
+      case 'water':
+        bgValue = 'bg-type-water'
+        break
+      case 'grass':
+        bgValue = 'bg-type-grass'
+        break
+      case 'electric':
+        bgValue = 'bg-type-electric'
+        break
+      case 'ice':
+        bgValue = 'bg-type-ice'
+        break
+      case 'fighting':
+        bgValue = 'bg-type-fighting'
+        break
+      case 'poison':
+        bgValue = 'bg-type-poison'
+        break
+      case 'ground':
+        bgValue = 'bg-type-ground'
+        break
+      case 'flying':
+        bgValue = 'bg-type-flying'
+        break
+      case 'psychic':
+        bgValue = 'bg-type-psychic'
+        break
+      case 'bug':
+        bgValue = 'bg-type-bug'
+        break
+      case 'rock':
+        bgValue = 'bg-type-rock'
+        break
+      case 'ghost':
+        bgValue = 'bg-type-ghost'
+        break
+      case 'dragon':
+        bgValue = 'bg-type-dragon'
+        break
+      case 'dark':
+        bgValue = 'bg-type-dark'
+        break
+      case 'steel':
+        bgValue = 'bg-type-steel'
+        break
+      case 'fairy':
+        bgValue = 'bg-type-fairy'
+        break
+      default:
+        bgValue = ''
+        break
+    }
   }
 
   return [
     bgValue,
+    props.disabled ? 'text-gray-500 [&>svg>path]:fill-gray-500' : 'text-white',
     {
-      'cursor-default': !props.clickable,
-      'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg active:translate-y-0': props.clickable,
-      'outline-primary outline outline-2 outline-offset-2': props.selected,
+      'cursor-default': !props.clickable || props.disabled,
+      'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg active:translate-y-0':
+        props.clickable && !props.disabled,
+      'outline-primary outline outline-2 outline-offset-1': props.selected,
       'aspect-square p-3': props.iconOnly,
+      'flex-1': props.fillContainer,
     },
   ]
 })
+
+function onClick(e: MouseEvent) {
+  if (props.disabled || !props.clickable) return
+  emit('click', e)
+}
 </script>
