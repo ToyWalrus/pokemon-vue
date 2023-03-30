@@ -4,6 +4,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
   theme: {
     extend: {
+      animation: {
+        'loading-spin': 'spin 800ms cubic-bezier(.75,.25,.25,.75) infinite',
+      },
       colors: {
         primary: '#385DA8',
         secondary: '#EB5212',
