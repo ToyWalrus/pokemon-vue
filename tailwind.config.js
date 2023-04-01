@@ -7,6 +7,13 @@ module.exports = {
       animation: {
         'loading-spin': 'spin 800ms cubic-bezier(.75,.25,.25,.75) infinite',
       },
+      dropShadow: {
+        pokemon: '2px 3px 0px #000',
+        'pokemon-raised': '2px 7px 2px #999',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
       colors: {
         primary: '#385DA8',
         secondary: '#EB5212',

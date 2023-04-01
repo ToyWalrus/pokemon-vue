@@ -19,7 +19,7 @@ export namespace API {
     name: string
   }
 
-  interface GenericRefDef {
+  export interface GenericRefDef {
     name: string
     url: string
   }
@@ -72,6 +72,7 @@ export namespace API {
     is_baby: boolean
     is_legendary: boolean
     is_mythical: boolean
+    genera: { genus: string; language: Language }[]
     growth_rate: GenericDef & {
       formula: string
       descriptions: { description: string; language: Language }[]

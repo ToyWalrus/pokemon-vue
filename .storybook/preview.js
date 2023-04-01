@@ -1,4 +1,7 @@
 import { useArgs } from '@storybook/client-api'
+import { app } from '@storybook/vue3'
+import TypeTag from '../src/components/TypeTag.vue'
+import LoadingSpinner from '../src/components/LoadingSpinner.vue'
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -17,3 +20,6 @@ export const decorators = [
     return story({ ...context, updateArgs })
   },
 ]
+
+app.component('TypeTag', TypeTag)
+app.component('LoadingSpinner', LoadingSpinner)
