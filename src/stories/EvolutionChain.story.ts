@@ -19,5 +19,5 @@ export const Default = Template.bind({})
 
 Default.args = {
   // eevee 67
-  chainId: 67,
+  chain: 67,
 }

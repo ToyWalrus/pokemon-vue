@@ -6,46 +6,40 @@
 </template>
 
 <script setup lang="ts">
-import type { API } from '@/model/APITypes'
-import { computed } from 'vue'
+import type { API } from '@/model/APITypes';
+import { kebabCaseToCamelCase } from '@/utils/stringHelpers';
+import { computed } from 'vue';
 
 interface EvolutionMethodProps {
-  details: API.EvolutionDetails[]
+  details: API.EvolutionDetails[];
 }
 
-const props = defineProps<EvolutionMethodProps>()
+const props = defineProps<EvolutionMethodProps>();
 
 const methodText = computed(() => {
-  const details: string[] = []
+  const details: string[] = [];
   for (const detail of props.details) {
     switch (detail.trigger?.name) {
       case 'level-up':
         if (typeof detail.min_level === 'number') {
-          details.push(`Level ${detail.min_level}`)
+          details.push(`Level ${detail.min_level}`);
         }
         if (typeof detail.min_happiness === 'number') {
-          details.push(`Happiness ${detail.min_happiness}`)
+          details.push(`Happiness ${detail.min_happiness}`);
         }
         if (typeof detail.min_affection === 'number') {
-          details.push(`Friendship ${detail.min_affection}`)
+          details.push(`Friendship ${detail.min_affection}`);
         }
-        break
+        break;
       case 'use-item':
         // TODO: make call for item name?
-        details.push(prettifyString(detail.item?.name))
-        break
+        details.push(kebabCaseToCamelCase(detail.item?.name));
+        break;
       default:
-        console.warn('Evolution method not resolved', detail.trigger?.name)
-        break
+        console.warn('Evolution method not resolved', detail.trigger?.name);
+        break;
     }
   }
-  return details.join(', ')
-})
-
-function prettifyString(str?: string) {
-  if (!str) return ''
-  const parts = str.split('-')
-  const capitalize = (str: string) => str.substring(0, 1).toUpperCase() + str.substring(1)
-  return parts.map(capitalize).join(' ')
-}
+  return details.join(', ');
+});
 </script>

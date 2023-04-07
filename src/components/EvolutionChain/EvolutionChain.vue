@@ -15,53 +15,55 @@
 </template>
 
 <script setup lang="ts">
-import type { API } from '@/model/APITypes'
-import { fetchWithApi } from '@/utils/fetchWithApi'
-import { computed, ref, watchEffect } from 'vue'
-import ChainGroup from './ChainGroup.vue'
+import type { API } from '@/model/APITypes';
+import { fetchWithApi } from '@/utils/fetchWithApi';
+import { computed, ref, watchEffect } from 'vue';
+import ChainGroup from './ChainGroup.vue';
+import { getIdFromUrl } from '@/utils/getIdFromUrl';
 
 export interface EvolutionChainProps {
-  // Found from the pokemon-species/:id call
-  chainId: number
+  // Either full url or chainId
+  chain: number | string;
 }
 
-const props = defineProps<EvolutionChainProps>()
+const props = defineProps<EvolutionChainProps>();
 
-const chain = ref<API.EvolutionChain | undefined>()
-const loading = ref(false)
+const chain = ref<API.EvolutionChain | undefined>();
+const loading = ref(false);
 
 watchEffect(async () => {
-  loading.value = true
-  const response = await fetchWithApi('evolution-chain', props.chainId)
-  chain.value = response.chain
-  loading.value = false
-})
+  loading.value = true;
+  const id = typeof props.chain === 'number' ? props.chain : getIdFromUrl(props.chain);
+  const response = await fetchWithApi('evolution-chain', id);
+  chain.value = response.chain;
+  loading.value = false;
+});
 
 const evolutions = computed(() => {
-  const evolutionMap: Map<API.GenericRefDef, API.GenericRefDef[]> = new Map()
+  const evolutionMap: Map<API.GenericRefDef, API.GenericRefDef[]> = new Map();
 
   const setChainLink = (link?: API.EvolutionChain) => {
-    if (!link) return
+    if (!link) return;
     if (!evolutionMap.has(link.species) && link.evolves_to.length) {
-      evolutionMap.set(link.species, [])
+      evolutionMap.set(link.species, []);
     }
 
     for (let i = 0; i < link.evolves_to.length; ++i) {
-      evolutionMap.get(link.species)!.push(link.evolves_to[i].species)
-      setChainLink(link.evolves_to[i])
+      evolutionMap.get(link.species)!.push(link.evolves_to[i].species);
+      setChainLink(link.evolves_to[i]);
     }
-  }
+  };
 
-  setChainLink(chain.value)
+  setChainLink(chain.value);
 
-  return evolutionMap
-})
+  return evolutionMap;
+});
 
 function getEvolutionDetailsFor(pokemon: API.GenericRefDef) {
-  let current = chain.value
+  let current = chain.value;
   while (current && pokemon !== current.species) {
-    current = current.evolves_to.find(item => item.species.name === pokemon.name)
+    current = current.evolves_to.find(item => item.species.name === pokemon.name);
   }
-  return current?.evolution_details ?? []
+  return current?.evolution_details ?? [];
 }
 </script>
