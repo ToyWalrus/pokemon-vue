@@ -4,6 +4,17 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
   theme: {
     extend: {
+      maxWidth: {
+        '2xs': '16rem',
+        '3xs': '12rem',
+      },
+      scale: {
+        200: '2',
+        250: '2.5',
+        300: '3',
+        350: '3.5',
+        400: '4',
+      },
       animation: {
         'loading-spin': 'spin 800ms cubic-bezier(.75,.25,.25,.75) infinite',
       },
@@ -41,6 +52,8 @@ module.exports = {
       fontFamily: {
         // sans: ['Hero', 'Hero Light'],
         // serif: ['Pokemon Solid', 'Pokemon Hollow'],
+        'pokemon-solid': ['Pokemon Solid'],
+        'pokemon-hollow': ['Pokemon Hollow'],
       },
     },
   },

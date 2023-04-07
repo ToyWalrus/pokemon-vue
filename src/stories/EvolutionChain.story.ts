@@ -12,11 +12,12 @@ const Template: StoryFn<EvolutionChainProps> = args => ({
   setup() {
     return { args }
   },
-  template: `<evolution-chain v-bind="args" />`,
+  template: `<evolution-chain class="w-[576px]" v-bind="args" />`,
 })
 
 export const Default = Template.bind({})
 
 Default.args = {
-  chainId: 1,
+  // eevee 67
+  chainId: 67,
 }

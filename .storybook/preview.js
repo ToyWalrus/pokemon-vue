@@ -1,6 +1,7 @@
 import { useArgs } from '@storybook/client-api'
 import { app } from '@storybook/vue3'
 import TypeTag from '../src/components/TypeTag.vue'
+import Icon from '../src/components/Icon.vue'
 import LoadingSpinner from '../src/components/LoadingSpinner.vue'
 
 export const parameters = {
@@ -23,3 +24,4 @@ export const decorators = [
 
 app.component('TypeTag', TypeTag)
 app.component('LoadingSpinner', LoadingSpinner)
+app.component('Icon', Icon)

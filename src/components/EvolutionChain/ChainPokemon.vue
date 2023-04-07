@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex flex-col items-center justify-between h-full">
     <img
       :src="sprite"
-      class="drop-shadow-pokemon transition-all duration-300 hover:drop-shadow-pokemon-raised hover:-translate-y-1"
+      class="drop-shadow-pokemon transition-all object-cover duration-200 hover:drop-shadow-pokemon-raised hover:-translate-y-1"
       :alt="`image of ${props.name}`" />
-    <h4 class="capitalize font-bold">{{ props.name }}</h4>
+    <h4 class="capitalize font-pokemon-solid text-lg tracking-widest">{{ props.name }}</h4>
   </div>
 </template>
 
