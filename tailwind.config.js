@@ -4,9 +4,15 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
   theme: {
     extend: {
+      minWidth: {
+        'list-item': '300px',
+      },
       maxWidth: {
         '2xs': '16rem',
         '3xs': '12rem',
+      },
+      borderWidth: {
+        1: '1px',
       },
       scale: {
         200: '2',
@@ -58,4 +64,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

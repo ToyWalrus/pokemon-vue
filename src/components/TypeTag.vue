@@ -28,125 +28,127 @@
 </template>
 
 <script setup lang="ts">
-import NormalIcon from '@/assets/Normal.svg?component'
-import FireIcon from '@/assets/Fire.svg?component'
-import WaterIcon from '@/assets/Water.svg?component'
-import GrassIcon from '@/assets/Grass.svg?component'
-import ElectricIcon from '@/assets/Electric.svg?component'
-import IceIcon from '@/assets/Ice.svg?component'
-import FightingIcon from '@/assets/Fighting.svg?component'
-import PoisonIcon from '@/assets/Poison.svg?component'
-import GroundIcon from '@/assets/Ground.svg?component'
-import FlyingIcon from '@/assets/Flying.svg?component'
-import PsychicIcon from '@/assets/Psychic.svg?component'
-import BugIcon from '@/assets/Bug.svg?component'
-import RockIcon from '@/assets/Rock.svg?component'
-import GhostIcon from '@/assets/Ghost.svg?component'
-import DragonIcon from '@/assets/Dragon.svg?component'
-import DarkIcon from '@/assets/Dark.svg?component'
-import SteelIcon from '@/assets/Steel.svg?component'
-import FairyIcon from '@/assets/Fairy.svg?component'
-import type { PokemonType } from '@/model/PokemonTypes'
-import { computed } from 'vue'
+import NormalIcon from '@/assets/Normal.svg?component';
+import FireIcon from '@/assets/Fire.svg?component';
+import WaterIcon from '@/assets/Water.svg?component';
+import GrassIcon from '@/assets/Grass.svg?component';
+import ElectricIcon from '@/assets/Electric.svg?component';
+import IceIcon from '@/assets/Ice.svg?component';
+import FightingIcon from '@/assets/Fighting.svg?component';
+import PoisonIcon from '@/assets/Poison.svg?component';
+import GroundIcon from '@/assets/Ground.svg?component';
+import FlyingIcon from '@/assets/Flying.svg?component';
+import PsychicIcon from '@/assets/Psychic.svg?component';
+import BugIcon from '@/assets/Bug.svg?component';
+import RockIcon from '@/assets/Rock.svg?component';
+import GhostIcon from '@/assets/Ghost.svg?component';
+import DragonIcon from '@/assets/Dragon.svg?component';
+import DarkIcon from '@/assets/Dark.svg?component';
+import SteelIcon from '@/assets/Steel.svg?component';
+import FairyIcon from '@/assets/Fairy.svg?component';
+import type { PokemonType } from '@/model/PokemonTypes';
+import { computed } from 'vue';
 
 export interface TypeTagProps {
-  type: PokemonType
-  iconOnly?: boolean
-  selected?: boolean
-  clickable?: boolean
-  disabled?: boolean
-  fillContainer?: boolean
-  compact?: boolean
+  type: PokemonType;
+  iconOnly?: boolean;
+  selected?: boolean;
+  clickable?: boolean;
+  disabled?: boolean;
+  fillContainer?: boolean;
+  size?: 'S' | 'M' | 'L';
 }
 
-const props = withDefaults(defineProps<TypeTagProps>(), { type: 'normal' })
+const props = withDefaults(defineProps<TypeTagProps>(), { type: 'normal' });
 const emit = defineEmits<{
-  (e: 'click', event: MouseEvent): void
-}>()
+  (e: 'click', event: MouseEvent): void;
+}>();
 
 const tagClass = computed(() => {
-  let bgValue: string
+  let bgValue: string;
   if (props.disabled) {
-    bgValue = 'bg-gray-400'
+    bgValue = 'bg-gray-400';
   } else {
     switch (props.type) {
       case 'normal':
-        bgValue = 'bg-type-normal'
-        break
+        bgValue = 'bg-type-normal';
+        break;
       case 'fire':
-        bgValue = 'bg-type-fire'
-        break
+        bgValue = 'bg-type-fire';
+        break;
       case 'water':
-        bgValue = 'bg-type-water'
-        break
+        bgValue = 'bg-type-water';
+        break;
       case 'grass':
-        bgValue = 'bg-type-grass'
-        break
+        bgValue = 'bg-type-grass';
+        break;
       case 'electric':
-        bgValue = 'bg-type-electric'
-        break
+        bgValue = 'bg-type-electric';
+        break;
       case 'ice':
-        bgValue = 'bg-type-ice'
-        break
+        bgValue = 'bg-type-ice';
+        break;
       case 'fighting':
-        bgValue = 'bg-type-fighting'
-        break
+        bgValue = 'bg-type-fighting';
+        break;
       case 'poison':
-        bgValue = 'bg-type-poison'
-        break
+        bgValue = 'bg-type-poison';
+        break;
       case 'ground':
-        bgValue = 'bg-type-ground'
-        break
+        bgValue = 'bg-type-ground';
+        break;
       case 'flying':
-        bgValue = 'bg-type-flying'
-        break
+        bgValue = 'bg-type-flying';
+        break;
       case 'psychic':
-        bgValue = 'bg-type-psychic'
-        break
+        bgValue = 'bg-type-psychic';
+        break;
       case 'bug':
-        bgValue = 'bg-type-bug'
-        break
+        bgValue = 'bg-type-bug';
+        break;
       case 'rock':
-        bgValue = 'bg-type-rock'
-        break
+        bgValue = 'bg-type-rock';
+        break;
       case 'ghost':
-        bgValue = 'bg-type-ghost'
-        break
+        bgValue = 'bg-type-ghost';
+        break;
       case 'dragon':
-        bgValue = 'bg-type-dragon'
-        break
+        bgValue = 'bg-type-dragon';
+        break;
       case 'dark':
-        bgValue = 'bg-type-dark'
-        break
+        bgValue = 'bg-type-dark';
+        break;
       case 'steel':
-        bgValue = 'bg-type-steel'
-        break
+        bgValue = 'bg-type-steel';
+        break;
       case 'fairy':
-        bgValue = 'bg-type-fairy'
-        break
+        bgValue = 'bg-type-fairy';
+        break;
       default:
-        bgValue = ''
-        break
+        bgValue = '';
+        break;
     }
   }
 
   return [
     bgValue,
     props.disabled ? 'text-gray-500 [&>svg>path]:fill-gray-500' : 'text-white',
-    props.compact ? 'px-2 py-0.5 [&>svg]:scale-75 text-sm' : 'px-4 py-2',
     {
-      'cursor-default': !props.clickable || props.disabled,
+      'px-4 py-2': !props.size || props.size === 'L',
+      'px-2 py-0.5 [&>svg]:scale-75 text-sm': props.size === 'S',
+      'px-3 py-1.5 [&>svg]:scale-85 text-sm': props.size === 'M',
+      'cursor-default': props.disabled,
       'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg active:translate-y-0':
         props.clickable && !props.disabled,
       'outline-primary outline outline-2 outline-offset-1': props.selected,
       'aspect-square p-3': props.iconOnly,
       'flex-1': props.fillContainer,
     },
-  ]
-})
+  ];
+});
 
 function onClick(e: MouseEvent) {
-  if (props.disabled || !props.clickable) return
-  emit('click', e)
+  if (props.disabled || !props.clickable) return;
+  emit('click', e);
 }
 </script>

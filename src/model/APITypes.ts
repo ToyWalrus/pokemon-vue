@@ -1,3 +1,5 @@
+import type { PokemonType } from './PokemonTypes';
+
 // https://pokeapi.co/docs/v2
 export namespace API {
   // #region Misc
@@ -42,7 +44,7 @@ export namespace API {
     game_indices: { game_index: number; version: GenericRefDef }[];
     abilities: { is_hidden: boolean; slot: number; ability: Ability }[];
     stats: { effort: number; base_stat: number; stat: GenericDef }[];
-    types: { type: PokemonType }[];
+    types: { slot: number; type: { name: PokemonType; url: string } }[];
     sprites: PokemonSprites;
     species: GenericRefDef;
   }
@@ -62,11 +64,6 @@ export namespace API {
     is_main_series: boolean;
     generation: GenericDef;
     flavor_text_entries: FlavorText[];
-  }
-
-  export interface PokemonType extends GenericDef {
-    move_damage_class: GenericDef;
-    names: Name[];
   }
 
   export interface PokemonSpecies extends GenericDef {

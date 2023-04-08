@@ -6,6 +6,7 @@ import { fetchWithApi } from '@/utils/fetchWithApi';
 import type { API } from '@/model/APITypes';
 import EvolutionChain from './EvolutionChain/EvolutionChain.vue';
 import { prettifyFlavorText } from '@/utils/stringHelpers';
+import { formatIdNumber } from '@/utils/formatIdNumber';
 
 export interface QuickInfoPopoverProps {
   id: number;
@@ -30,8 +31,7 @@ watchEffect(async () => {
 });
 
 const dexFormatted = computed(() => {
-  const num = props.id;
-  return num < 10 ? `00${num}` : num < 100 ? `0${num}` : num.toString();
+  return formatIdNumber(props.id);
 });
 
 const genus = computed(() => {
@@ -61,7 +61,7 @@ const flavorText = computed(() => {
           <span class="italic">{{ genus }}</span>
         </div>
         <div class="flex flex-col self-start justify-start gap-1" v-if="pokemonTypes?.length">
-          <type-tag v-for="type in pokemonTypes" :type="type" :key="type" :clickable="false" :compact="true" />
+          <type-tag v-for="type in pokemonTypes" :type="type" :key="type" :clickable="false" size="S" />
         </div>
       </div>
       <span class="italic self-start" v-if="flavorText">{{ flavorText }}</span>

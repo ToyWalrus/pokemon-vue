@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import { getOfficialArtworkLink } from '@/utils/getOfficialArtworkLink';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -26,6 +27,6 @@ const id = computed(() => {
 
 const sprite = computed(() => {
   if (!id.value) return '';
-  return `https://github.com/PokeAPI/sprites/raw/master/sprites/pokemon/other/official-artwork/${id.value}.png`;
+  return getOfficialArtworkLink(id.value);
 });
 </script>
