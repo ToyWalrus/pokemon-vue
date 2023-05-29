@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watch } from 'vue';
 import MagnifyIcon from 'vue-material-design-icons/Magnify.vue';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
 
@@ -37,6 +37,7 @@ export interface SearchFieldProps {
   label?: string;
   disabled?: boolean;
   changeDebounce?: number;
+  initialValue?: string;
 }
 
 const props = defineProps<SearchFieldProps>();
@@ -44,11 +45,11 @@ const emit = defineEmits<{
   (e: 'onChange', val: string): void;
 }>();
 
-const searchValue = ref('');
+const searchValue = ref(props.initialValue ?? '');
 const inputRef = ref();
 let debounceTimeout: ReturnType<typeof setTimeout> | undefined = undefined;
 
-watchEffect(() => {
+watch(searchValue, () => {
   const val = searchValue.value;
 
   const emitChange = () => {

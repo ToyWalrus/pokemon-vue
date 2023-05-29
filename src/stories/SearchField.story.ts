@@ -22,14 +22,20 @@ export const Default = Template.bind({});
 
 Default.args = {};
 
-export const DebouncedCallback = Template.bind({});
-
-DebouncedCallback.args = {
-  changeDebounce: 250,
-};
-
 export const Disabled = Template.bind({});
 
 Disabled.args = {
   disabled: true,
+};
+
+export const WithInitialValue = Template.bind({});
+
+WithInitialValue.args = {
+  initialValue: 'Gyarados',
+};
+
+export const DebouncedCallback = Template.bind({});
+
+DebouncedCallback.args = {
+  changeDebounce: 250,
 };
