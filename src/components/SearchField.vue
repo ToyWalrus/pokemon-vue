@@ -7,7 +7,7 @@
         :disabled="props.disabled"
         :class="[
           'w-full text-sm transition-colors duration-300 outline-none border-2 rounded px-10 py-1',
-          !props.disabled && 'border-primary focus-within:border-accent',
+          !props.disabled && 'border-gray-700 focus-within:border-primary',
         ]"
         type="text"
         v-model="searchValue" />
@@ -20,7 +20,7 @@
       </button>
       <button
         v-if="!props.disabled && !!searchValue"
-        class="absolute right-2 top-1 transition-colors hover:text-secondary"
+        class="absolute right-2 top-1 transition-colors hover:text-primary"
         @click="searchValue = ''">
         <CloseIcon />
       </button>
