@@ -11835,6 +11835,11 @@ vue-loader@^16.4.1, vue-loader@^16.8.3:
     hash-sum "^2.0.0"
     loader-utils "^2.0.0"
 
+vue-material-design-icons@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/vue-material-design-icons/-/vue-material-design-icons-5.2.0.tgz#4e0cf50a68cb6900e8bd2550acbb44fad99bbd8e"
+  integrity sha512-fcdcJHQ9fQw2CAytuLAzWSELcxH138sCdMItVhvmO7Lu9afIgojB/UCWv7XHt/lURsnq/n6O+muM4AQgw8yfig==
+
 vue-template-compiler@^2.7.14:
   version "2.7.14"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.7.14.tgz#4545b7dfb88090744c1577ae5ac3f964e61634b1"

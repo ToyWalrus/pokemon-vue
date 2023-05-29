@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "vite-svg-loader": "^4.0.0",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-material-design-icons": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
