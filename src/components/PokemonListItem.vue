@@ -123,7 +123,7 @@ const bgClass = computed(() => {
     @mouseover="onHoverOver"
     @mouseout="onHoverOut"
     @click="emits('click')"
-    class="relative flex flex-row justify-between min-w-list-item p-3 items-center max-h cursor-pointer border-1 border-gray-600 first:rounded-t-md last:rounded-b-md [&:not(:first-child)]:border-t-0"
+    class="relative flex flex-row justify-between min-w-list-item p-3 items-center max-h cursor-pointer"
     :class="heightClass">
     <div
       class="absolute transition-all top-0 bottom-0 left-0 bg-gradient-to-r -z-10 duration-200 to-80%"
