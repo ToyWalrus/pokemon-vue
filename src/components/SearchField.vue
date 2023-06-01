@@ -21,7 +21,7 @@
       <button
         v-if="!props.disabled && !!searchValue"
         class="absolute right-2 top-1 transition-colors hover:text-primary"
-        @click="searchValue = ''">
+        @click="onClear">
         <CloseIcon />
       </button>
     </div>
@@ -67,4 +67,10 @@ watch(searchValue, () => {
     debounceTimeout = setTimeout(emitChange, props.changeDebounce);
   }
 });
+
+function onClear() {
+  searchValue.value = '';
+  emit('onChange', '');
+  clearTimeout(debounceTimeout);
+}
 </script>

@@ -25,6 +25,7 @@ watchEffect(async () => {
 watchEffect(async () => {
   if (props.types) return;
   const pokemon = await fetchWithApi('pokemon', props.id);
+  pokemonTypes.value = [];
   for (const type of pokemon.types) {
     pokemonTypes.value.push(type.type.name as PokemonType);
   }
@@ -50,8 +51,8 @@ const flavorText = computed(() => {
   <!-- TODO: maybe make border and background match primary type color -->
   <div
     class="flex flex-col gap-4 bg-slate-100 border-primary items-center border-4 rounded-[10px] p-4 pl-6 max-w-xl min-w-[250px] shadow-lg relative">
-    <div
-      class="absolute -left-[13px] w-5 h-5 border-b-primary border-l-primary border-b-4 border-l-4 bg-slate-100 rotate-45" />
+    <!-- <div
+      class="absolute -left-[13px] w-5 h-5 border-b-primary border-l-primary border-b-4 border-l-4 bg-slate-100 rotate-45" /> -->
     <LoadingSpinner v-if="!species" />
     <template v-else>
       <div class="flex flex-row flex-1 gap-4 items-center self-start justify-between flex-wrap w-full">

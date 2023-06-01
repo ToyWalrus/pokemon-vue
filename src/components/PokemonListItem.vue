@@ -17,6 +17,21 @@ const pokemon = ref<API.Pokemon>();
 const loading = ref(true);
 const hovering = ref(false);
 
+const emits = defineEmits<{
+  (e: 'hoverChange', hovering: boolean): void;
+  (e: 'click'): void;
+}>();
+
+function onHoverOver() {
+  hovering.value = true;
+  emits('hoverChange', true);
+}
+
+function onHoverOut() {
+  hovering.value = false;
+  emits('hoverChange', false);
+}
+
 watchEffect(async () => {
   loading.value = true;
   pokemon.value = await fetchWithApi('pokemon', props.id);
@@ -105,13 +120,25 @@ const bgClass = computed(() => {
 
 <template>
   <li
-    @mouseover="hovering = true"
-    @mouseout="hovering = false"
+    @mouseover="onHoverOver"
+    @mouseout="onHoverOut"
+    @click="emits('click')"
     class="relative flex flex-row justify-between min-w-list-item p-3 items-center max-h cursor-pointer border-1 border-gray-600 first:rounded-t-md last:rounded-b-md [&:not(:first-child)]:border-t-0"
     :class="heightClass">
     <div
       class="absolute transition-all top-0 bottom-0 left-0 bg-gradient-to-r -z-10 duration-200 to-80%"
-      :class="[bgClass, hovering || showGradient ? 'w-full' : 'w-0']" />
+      :class="[
+        bgClass,
+        typeof showGradient === 'boolean'
+          ? {
+              'w-full': showGradient,
+              'w-0': !showGradient,
+            }
+          : {
+              'w-full': hovering,
+              'w-0': !hovering,
+            },
+      ]" />
     <div class="flex flex-row gap-4 items-center">
       <loading-spinner v-if="loading" />
       <img v-else :src="imgUrl" alt="official artwork" :class="imgHeight" class="drop-shadow-md" />
