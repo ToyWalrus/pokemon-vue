@@ -1,18 +1,24 @@
 <template>
-  <div class="flex flex-row w-full gap-4">
+  <div class="flex flex-row w-full gap-4 max-h-screen p-4">
     <div class="flex flex-col flex-[2] gap-4">
-      <SearchField @on-change="onChangeSearchValue" :change-debounce="150" />
-      <ul>
+      <div class="flex flex-row w-full items-end gap-2">
+        <SearchField class="flex-1" @on-change="onChangeSearchValue" :change-debounce="150" />
+        <span> Compact <input type="checkbox" v-model="compact" /></span>
+      </div>
+      <ul class="flex-1 overflow-y-auto">
         <PokemonListItem
           v-for="pokemonRef in filteredPokemon"
+          :compact="compact"
           :key="pokemonRef.name"
           :id="pokemonRef.id"
-          :show-gradient="selectedId === undefined ? undefined : selectedId === pokemonRef.id"
+          :show-gradient="
+            selectedId === undefined ? undefined : selectedId === pokemonRef.id || hoveredId === pokemonRef.id
+          "
           @hover-change="hovering => onItemHoverChange(pokemonRef.id, hovering)"
           @click="selectedId === pokemonRef.id ? (selectedId = undefined) : (selectedId = pokemonRef.id)" />
       </ul>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 flex-col flex justify-center items-center">
       <QuickInfoPopover v-if="!!selectedId" :id="selectedId" />
     </div>
   </div>
@@ -31,6 +37,7 @@ const pokemonRefList = ref<(API.GenericRefDef & { id: number })[]>([]);
 const filterValue = ref('');
 const hoveredId = ref<number | undefined>();
 const selectedId = ref<number | undefined>();
+const compact = ref<boolean>(false);
 
 async function getInitialList() {
   const list = await fetchListWithApi('pokemon', 151);
