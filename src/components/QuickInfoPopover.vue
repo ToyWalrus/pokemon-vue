@@ -4,7 +4,7 @@ import type { PokemonType } from '@/model/PokemonTypes';
 import { computed, ref, watchEffect } from 'vue';
 import { fetchWithApi } from '@/utils/fetchWithApi';
 import type { API } from '@/model/APITypes';
-import EvolutionChain from './EvolutionChain/EvolutionChain.vue';
+import EvolutionChain from './EvolutionChain';
 import { prettifyFlavorText } from '@/utils/stringHelpers';
 import { formatIdNumber } from '@/utils/formatIdNumber';
 
@@ -67,7 +67,7 @@ const flavorText = computed(() => {
       </div>
       <span class="italic self-start" v-if="flavorText">{{ flavorText }}</span>
       <h3 class="font-bold text-center">Evolution Chain</h3>
-      <evolution-chain :chain="species.evolution_chain.url" />
+      <EvolutionChain :chain="species.evolution_chain.url" />
     </template>
   </div>
 </template>

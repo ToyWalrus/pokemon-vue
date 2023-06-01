@@ -1,4 +1,4 @@
-import EvolutionChain from './EvolutionChain.vue'
+import EvolutionChainWrapper from './EvolutionChainWrapper.vue';
 
-export default EvolutionChain
-export * from './EvolutionChain.vue'
+export default EvolutionChainWrapper;
+export { type EvolutionChainWrapperProps as EvolutionChainProps } from './EvolutionChainWrapper.vue';

@@ -33,7 +33,7 @@ const hoveredId = ref<number | undefined>();
 const selectedId = ref<number | undefined>();
 
 async function getInitialList() {
-  const list = await fetchListWithApi('pokemon', 3);
+  const list = await fetchListWithApi('pokemon', 151);
   pokemonRefList.value = list.map(item => ({ ...item, id: getIdFromUrl(item.url) }));
 }
 
