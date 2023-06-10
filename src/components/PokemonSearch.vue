@@ -74,5 +74,6 @@ function onItemHoverChange(id: number, isHovering: boolean) {
     hoveredId.value = undefined;
   }
 }
+
 getInitialList();
 </script>
