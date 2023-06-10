@@ -2,8 +2,23 @@ import type { API } from '@/model/APITypes';
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
-export async function fetchListWithApi(endpoint: PokeEndpoint, limit = 200): Promise<API.GenericRefDef[]> {
-  const response = await fetch(`${BASE_URL}/${endpoint}/?limit=${limit}`);
+interface FetchOptions {
+  limit?: number;
+  offset?: number;
+}
+
+const pokemonNames: API.GenericRefDef[] = [];
+
+export async function getAllPokemon() {
+  if (pokemonNames.length) return pokemonNames;
+  const response = await fetch(`${BASE_URL}/pokemon?limit=1010`);
+  const body = await response.json();
+  pokemonNames.push(...body.results);
+  return pokemonNames;
+}
+
+export async function fetchListWithApi(endpoint: PokeEndpoint, options?: FetchOptions): Promise<API.GenericRefDef[]> {
+  const response = await fetch(`${BASE_URL}/${endpoint}/?limit=${options?.limit ?? 200}`);
   const body = await response.json();
   return body.results;
 }

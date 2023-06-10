@@ -27,23 +27,35 @@
 
 <script setup lang="ts">
 import type { API } from '@/model/APITypes';
-import { fetchListWithApi } from '@/utils/fetchWithApi';
+import { getAllPokemon } from '@/utils/fetchWithApi';
 import { computed, ref } from 'vue';
 import SearchField from '@/components/SearchField.vue';
 import { getIdFromUrl } from '@/utils/getIdFromUrl';
 import PokemonListItem from '@/components/PokemonListItem.vue';
 import QuickInfoPopover from './QuickInfoPopover.vue';
+import Fuse from 'fuse.js';
 
-const pokemonRefList = ref<(API.GenericRefDef & { id: number })[]>([]);
+type PokemonRef = API.GenericRefDef & { id: number };
+
+const fullPokemonList = ref<PokemonRef[] | undefined>();
+const virtualizedList = ref<PokemonRef[]>([]);
+const fuzzySearch = ref<Fuse<PokemonRef> | undefined>();
+
 const filterValue = ref('');
 const hoveredId = ref<number | undefined>();
 const selectedId = ref<number | undefined>();
 const compact = ref<boolean>(false);
 
+const queryLimit = 100;
+
 async function getInitialList() {
-  // TODO: virtualize
-  const list = await fetchListWithApi('pokemon', 151);
-  pokemonRefList.value = list.map(item => ({ ...item, id: getIdFromUrl(item.url) }));
+  const allPokemon = await getAllPokemon();
+  const mapped = allPokemon.map(item => ({ ...item, id: getIdFromUrl(item.url) }));
+
+  fullPokemonList.value = mapped;
+  virtualizedList.value = mapped.slice(0, queryLimit);
+
+  fuzzySearch.value = new Fuse(mapped, { keys: ['id', 'name'], threshold: 0.4 });
 }
 
 function onChangeSearchValue(newValue: string) {
@@ -51,10 +63,8 @@ function onChangeSearchValue(newValue: string) {
 }
 
 const filteredPokemon = computed(() => {
-  if (!filterValue.value) return pokemonRefList.value;
-  return pokemonRefList.value.filter(
-    ({ name, id }) => name.includes(filterValue.value) || id.toString().includes(filterValue.value)
-  );
+  if (!filterValue.value || !fuzzySearch.value) return virtualizedList.value;
+  return fuzzySearch.value.search(filterValue.value).map(result => result.item);
 });
 
 function onItemHoverChange(id: number, isHovering: boolean) {

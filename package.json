@@ -15,6 +15,7 @@
     "g": "plop"
   },
   "dependencies": {
+    "fuse.js": "^6.6.2",
     "vite-svg-loader": "^4.0.0",
     "vue": "^3.2.47",
     "vue-material-design-icons": "^5.2.0"
