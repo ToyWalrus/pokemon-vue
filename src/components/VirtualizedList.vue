@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, type HTMLAttributes } from 'vue';
+import { ref, watchEffect, type HTMLAttributes, watch } from 'vue';
 
 export interface VirtualizedListProps {
   items: { id: string | number }[];
@@ -15,6 +15,7 @@ export interface VirtualizedListProps {
   maxItemsShown?: number;
   renderBuffer?: number;
   hideScrollbar?: boolean;
+  resetScrollOnListChange?: boolean;
 }
 
 const props = defineProps<VirtualizedListProps>();
@@ -28,6 +29,13 @@ watchEffect(() => {
   if (heightDiff > 0) {
     setRenderedRange(renderedRange.value[0] - heightDiff, renderedRange.value[1] - heightDiff);
   }
+});
+
+// TODO: figure out why this isn't working
+watch(props.items, () => {
+  console.log('list change', props.resetScrollOnListChange);
+  if (!props.resetScrollOnListChange) return;
+  listRef.value?.scrollTo({ top: 0 });
 });
 
 function calculateRenderedRange() {

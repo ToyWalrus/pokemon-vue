@@ -10,6 +10,7 @@
         :hideScrollbar="true"
         :items="filteredPokemon"
         :itemHeight="compact ? 64 : 96"
+        :resetScrollOnListChange="true"
         v-slot="{ item: pokemonRef, style, index }">
         <PokemonListItem
           :compact="compact"
