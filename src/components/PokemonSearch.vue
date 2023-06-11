@@ -1,23 +1,28 @@
 <template>
-  <div class="flex flex-row w-full gap-4 max-h-screen p-4">
+  <div class="flex flex-row w-full gap-4 h-screen p-4">
     <div class="flex flex-col flex-[2] gap-4">
       <div class="flex flex-row w-full items-end gap-2">
         <SearchField class="flex-1" @on-change="onChangeSearchValue" :change-debounce="150" />
         <span> Compact <input type="checkbox" v-model="compact" /></span>
       </div>
-      <ul class="flex-1 overflow-y-auto border-1 border-gray-600 rounded-md">
+      <VirtualizedList
+        class="flex-1 border-1 border-gray-600 rounded-md flex-grow"
+        :hideScrollbar="true"
+        :items="filteredPokemon"
+        :itemHeight="compact ? 64 : 96"
+        v-slot="{ item: pokemonRef, style, index }">
         <PokemonListItem
-          v-for="(pokemonRef, idx) in filteredPokemon"
           :compact="compact"
           :key="pokemonRef.name"
           :id="pokemonRef.id"
           :show-gradient="
             selectedId === undefined ? undefined : selectedId === pokemonRef.id || hoveredId === pokemonRef.id
           "
-          @hover-change="hovering => onItemHoverChange(pokemonRef.id, hovering)"
+          @hover-change="(hovering: boolean) => onItemHoverChange(pokemonRef.id, hovering)"
           @click="selectedId === pokemonRef.id ? (selectedId = undefined) : (selectedId = pokemonRef.id)"
-          :class="idx !== 0 && 'border-gray-600 border-t-1'" />
-      </ul>
+          :class="index !== 0 && 'border-gray-600 border-t-1'"
+          :style="style" />
+      </VirtualizedList>
     </div>
     <div class="flex-1 flex-col flex justify-center items-center">
       <QuickInfoPopover v-if="!!selectedId" :id="selectedId" />
@@ -34,6 +39,7 @@ import { getIdFromUrl } from '@/utils/getIdFromUrl';
 import PokemonListItem from '@/components/PokemonListItem.vue';
 import QuickInfoPopover from './QuickInfoPopover.vue';
 import Fuse from 'fuse.js';
+import VirtualizedList from './VirtualizedList.vue';
 
 type PokemonRef = API.GenericRefDef & { id: number };
 

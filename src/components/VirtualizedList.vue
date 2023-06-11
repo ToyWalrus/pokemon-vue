@@ -1,7 +1,7 @@
 <template>
-  <ul class="overflow-y-auto relative no-scrollbar" ref="listRef">
+  <ul class="overflow-y-auto relative" :class="hideScrollbar && 'no-scrollbar'" ref="listRef">
     <template v-for="(item, index) in items" :key="item.id">
-      <slot v-if="indexIsInRange(index)" :item="item" :style="getItemStyleProp(index)" />
+      <slot v-if="indexIsInRange(index)" :item="item" :style="getItemStyleProp(index)" :index="index" />
     </template>
   </ul>
 </template>
@@ -10,10 +10,11 @@
 import { ref, watchEffect, type HTMLAttributes } from 'vue';
 
 export interface VirtualizedListProps {
-  items: { id: string }[];
+  items: { id: string | number }[];
   itemHeight: number;
   maxItemsShown?: number;
   renderBuffer?: number;
+  hideScrollbar?: boolean;
 }
 
 const props = defineProps<VirtualizedListProps>();
