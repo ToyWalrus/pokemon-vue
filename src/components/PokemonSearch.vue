@@ -43,8 +43,7 @@ import VirtualizedList from './VirtualizedList.vue';
 
 type PokemonRef = API.GenericRefDef & { id: number };
 
-const fullPokemonList = ref<PokemonRef[] | undefined>();
-const virtualizedList = ref<PokemonRef[]>([]);
+const fullPokemonList = ref<PokemonRef[]>([]);
 const fuzzySearch = ref<Fuse<PokemonRef> | undefined>();
 
 const filterValue = ref('');
@@ -52,15 +51,11 @@ const hoveredId = ref<number | undefined>();
 const selectedId = ref<number | undefined>();
 const compact = ref<boolean>(false);
 
-const queryLimit = 100;
-
 async function getInitialList() {
   const allPokemon = await getAllPokemon();
   const mapped = allPokemon.map(item => ({ ...item, id: getIdFromUrl(item.url) }));
 
   fullPokemonList.value = mapped;
-  virtualizedList.value = mapped.slice(0, queryLimit);
-
   fuzzySearch.value = new Fuse(mapped, { keys: ['id', 'name'], threshold: 0.4 });
 }
 
@@ -69,7 +64,7 @@ function onChangeSearchValue(newValue: string) {
 }
 
 const filteredPokemon = computed(() => {
-  if (!filterValue.value || !fuzzySearch.value) return virtualizedList.value;
+  if (!filterValue.value || !fuzzySearch.value) return fullPokemonList.value;
   return fuzzySearch.value.search(filterValue.value).map(result => result.item);
 });
 
