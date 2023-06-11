@@ -141,7 +141,7 @@ const tagClass = computed(() => {
       'cursor-pointer hover:-translate-y-px hover:drop-shadow-lg active:translate-y-0':
         props.clickable && !props.disabled,
       'outline-primary outline outline-2 outline-offset-1': props.selected,
-      'aspect-square p-3': props.iconOnly,
+      'aspect-square p-3 justify-center': props.iconOnly,
       'flex-1': props.fillContainer,
     },
   ];
