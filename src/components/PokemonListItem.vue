@@ -47,7 +47,7 @@ const formattedId = computed(() => {
 });
 
 const heightClass = computed(() => {
-  return props.compact ? 'max-h-16' : 'max-h-22';
+  return props.compact ? 'max-h-16' : 'max-h-24';
 });
 
 const imgHeight = computed(() => {
